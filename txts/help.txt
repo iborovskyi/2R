@@ -1,0 +1,14 @@
+Controls:
+wasd - movement; to hit monster just move towards him;
+p - pick up item;
+o - drop item;
+i - show inventory;
+c - check health;
+e - eat something;
+q - quit;
+,/. - decrease/increase music volume;
+[/] - decrease/increase effect volume;
+h - show this note;
+; - credits
+Press any key to return to game.
+

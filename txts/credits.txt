@@ -1,0 +1,29 @@
+Credits:
+
+
+Tiles:
+Clint Bellanger
+John Harvey
+Ben
+Flying Tiger Comics
+Hansjorg Malthaner
+
+Fonts:
+Joel Carrouche
+
+UI background:
+darkwood67
+
+Music:
+Alexander Naumov (Ellary)
+Augmentality (Brandon Morris)
+yd
+
+Sound effects:
+Independent.nu
+mikeask (Michael Vivaldini)
+Michel Baradari
+
+
+Source code:
+Ivan Borovskyi (imagifault)
