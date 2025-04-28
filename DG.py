@@ -46,7 +46,7 @@ class initScreen(object):
             self.text = self.font.render(string, True, (0,0,0))
             delta = self.text.get_height() + 20
             self.DISPLAYSURF.blit(self.text, ((1024 - self.text.get_width()) // 2, \
-                    ((txt_start_y - ((delta*len(txt))/2) ) // 2)))    # Draw text
+                    ((txt_start_y - ((delta*len(txt))//2) ) // 2)))    # Draw text
             txt_start_y += delta
 
 
@@ -94,7 +94,7 @@ class initScreen(object):
         print('ASSIGNING UNIQUE TEXTURES')
         self.uniTex()
 
-        
+
 
 
     def loadAnimated(self, path_part, tKey, tList, posNum, entryName):
@@ -252,7 +252,7 @@ class initScreen(object):
         print('MISSING WALLS: ' + str(len(debug_missing)))
         for t in debug_missing:
             print('~'*8)
-            print"'"+t+"'"
+            print("'"+t+"'")
             print(t[:3]+'\n'+t[3:6]+'\n'+t[6:])
 
         # Notifying the game that walls are loaded!
@@ -287,8 +287,8 @@ class initScreen(object):
         cartx = cTile * self.tileWidth    #x is the index of the currentTile * the tile width
         carty = cRow * self.tileHeight     #y is the index of the currentRow * the tile height
 
-        x = 450 + ((cartx - carty + delta[1]) / 2)
-        y = -128 + ((cartx + carty + delta[0])/4)
+        x = 450 + ((cartx - carty + delta[1]) // 2)
+        y = -128 + ((cartx + carty + delta[0])//4)
         self.pygame.Color(0,0,0,0)
 
         self.DISPLAYSURF.blit(tImage, (x, y)) #display the actual tile
@@ -354,7 +354,7 @@ class initScreen(object):
 
             for l in (armor, weapons):
                 for i in l:
-                    tileImage = self.tiles[i][m_type][self.creatures[moved][7]][cr_rec/2]
+                    tileImage = self.tiles[i][m_type][self.creatures[moved][7]][cr_rec//2]
                     if isReverse == True:
                         self.updTile(currentTile-delta[1], currentRow-delta[0], tileImage, mdelta)
                     else:
@@ -372,7 +372,7 @@ class initScreen(object):
         # a bit of Black magic to perform movement animations
         if moved != None:
             steps = len(self.tiles[moved][m_type][self.creatures[moved][7]])    # number of steps depends on animation textures quantity
-            stepDistance = (self.tileWidth/2)/steps # step distance in pixels depends on number of steps
+            stepDistance = (self.tileWidth//2)//steps # step distance in pixels depends on number of steps
             # a dict to map coordinate delta to pixel delta
             delta_map = {(0,0): (0,0), (-1,0): (-stepDistance,stepDistance), (1,0): (stepDistance,-stepDistance),
                     (0,-1): (-stepDistance,-stepDistance), (0,1):(stepDistance,stepDistance)}   # (y,x)
@@ -404,12 +404,12 @@ class initScreen(object):
                     if starting_tile != None and m_type == 'walk' and (currentTile,currentRow) == \
                             (starting_tile[0]+delta[1],starting_tile[1]+delta[0]) and cr_r > \
                             len(self.tiles[moved][m_type][self.creatures[moved][7]]):    # moving in 2nd tile
-                        steps = (len(self.tiles[moved][m_type][self.creatures[moved][7]])-1)/2
+                        steps = (len(self.tiles[moved][m_type][self.creatures[moved][7]])-1)//2
                         reverse_delta = ((-stepDistance*steps)+draw_delta[0], (-stepDistance*steps)+draw_delta[1])
                         floor = getFloorTex()   # redraw floor texture
                         self.updTile(currentTile, currentRow, floor, movemap_delta)
                         if moved != '@':
-                            tileImage = self.tiles[moved][m_type][self.creatures[moved][7]][cr_r/2]
+                            tileImage = self.tiles[moved][m_type][self.creatures[moved][7]][cr_r//2]
                             self.updTile(currentTile-delta[1], currentRow-delta[0], tileImage, movechar_delta)
                         else:
                             drawPlayer(True, m_type, moved, movechar_delta)
@@ -423,14 +423,17 @@ class initScreen(object):
                         elif tile == '#':
                             coords = self.dsight_coords[currentRow][currentTile]
                             tile_tex = self.level_textures[coords[0]][coords[1]]
-                            if str(type(tile_tex)) == "<type 'tuple'>":
+                            #if str(type(tile_tex)) == "<type 'tuple'>":
+                            if type(tile_tex) == tuple:
                                 self.updTile(currentTile, currentRow, self.tiles[' '][0], movemap_delta)
                                 if self.isTp(coords[0], coords[1]):
                                     tileImage = self.walls_tp[tile_tex[0]][1][tile_tex[1]]
                                 else:
                                     tileImage = self.walls[tile_tex[0]][1][tile_tex[1]]
                             else:
+                                # PYTHON3 WALLS BUG IS HERE!!!
                                 tileImage = self.blank
+                                #tileImage = self.default
                             self.updTile(currentTile, currentRow, tileImage, movemap_delta)
                         elif tile in self.creatures.keys():
                             floor = getFloorTex()
@@ -449,7 +452,7 @@ class initScreen(object):
                     currentTile += 1
                 else:
                     if m_type == 'walk':
-                        tileImage = self.tiles[tile][m_type][self.creatures[tile][7]][cr_r/2]
+                        tileImage = self.tiles[tile][m_type][self.creatures[tile][7]][cr_r//2]
                         starting_tile = (currentTile, currentRow)
                         floor = getFloorTex()
                         if cr_r > len(self.tiles[moved][m_type][self.creatures[moved][7]]):   # redrawing starting tile
@@ -464,7 +467,7 @@ class initScreen(object):
                         floor = getFloorTex()
                         self.updTile(currentTile, currentRow, floor, movemap_delta)
                         if moved != '@':
-                            tileImage = self.tiles[tile][m_type][self.creatures[tile][7]][cr_r/2]
+                            tileImage = self.tiles[tile][m_type][self.creatures[tile][7]][cr_r//2]
                             self.updTile(currentTile, currentRow, tileImage, movechar_delta)
                         else:
                             drawPlayer(False, m_type, moved, movechar_delta)
@@ -491,7 +494,7 @@ class initScreen(object):
             cr_r += 1
             if cr_r < len(self.tiles[moved][m_type][self.creatures[moved][7]])*2:
                 if m_type == 'attack':
-                    if cr_r == len(self.tiles[moved][m_type][self.creatures[moved][7]])/2:
+                    if cr_r == len(self.tiles[moved][m_type][self.creatures[moved][7]])//2:
                         self.playEffect('hits')
                     self.sleep(self.anim_del)
                 self.tileLogic(moved, delta, cr_r, starting_tile, m_type)
